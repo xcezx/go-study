@@ -10,15 +10,17 @@ import (
 	"testing"
 )
 
-func TestPingHandler(t *testing.T) {
+func setupServer() *Server {
 	var buf bytes.Buffer
 	logger := log.New(&buf, "*** ", log.LUTC|log.LstdFlags)
-	srv := &Server{
+	return &Server{
 		accessLogger: logger,
 	}
-	handler := srv.PingHandler()
+}
 
-	s := httptest.NewServer(handler)
+func Test__pingHandler(t *testing.T) {
+	srv := setupServer()
+	s := httptest.NewServer(http.HandlerFunc(srv.pingHandler))
 	defer s.Close()
 
 	res, err := http.Get(s.URL)
@@ -39,6 +41,25 @@ func TestPingHandler(t *testing.T) {
 	}
 }
 
-func TestEchoHandler(t *testing.T) {
-	t.Skip()
+func Test__echoHandler(t *testing.T) {
+	srv := setupServer()
+	s := httptest.NewServer(http.HandlerFunc(srv.echoHandler))
+	defer s.Close()
+
+	res, err := http.Get(s.URL + "?msg=Hello")
+	if err != nil {
+		t.Errorf("err: %v", err)
+	}
+	if res.StatusCode != http.StatusOK {
+		t.Errorf("expected %d to eq %d", res.StatusCode, http.StatusOK)
+	}
+
+	defer res.Body.Close()
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		t.Errorf("err: %v", err)
+	}
+	if !strings.Contains(string(body), "Hello") {
+		t.Errorf("expected %s to eq %s", body, "Hello")
+	}
 }
