@@ -1,10 +1,10 @@
 package server
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
-	"fmt"
 )
 
 type Server struct {
@@ -12,7 +12,7 @@ type Server struct {
 }
 
 func New() *Server {
-	logger := log.New(os.Stdout, "*** ", log.LUTC | log.LstdFlags)
+	logger := log.New(os.Stdout, "*** ", log.LUTC|log.LstdFlags)
 	return &Server{
 		accessLogger: logger,
 	}
