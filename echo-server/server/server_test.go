@@ -16,7 +16,7 @@ func setupServer() *server {
 	return New(logger)
 }
 
-func Test__pingHandler(t *testing.T) {
+func TestPingHandler(t *testing.T) {
 	srv := setupServer()
 	s := httptest.NewServer(http.HandlerFunc(srv.pingHandler))
 	defer s.Close()
@@ -39,7 +39,7 @@ func Test__pingHandler(t *testing.T) {
 	}
 }
 
-func Test__echoHandler(t *testing.T) {
+func TestEchoHandler(t *testing.T) {
 	srv := setupServer()
 	s := httptest.NewServer(http.HandlerFunc(srv.echoHandler))
 	defer s.Close()
