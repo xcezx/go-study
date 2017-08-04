@@ -3,12 +3,14 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/xcezx/go-study/echo-server/server"
 )
 
 func main() {
-	srv := server.New()
+	logger := log.New(os.Stdout, "*** ", log.LUTC|log.LstdFlags)
+	srv := server.New(logger)
 
 	http.Handle("/echo", srv.EchoHandler())
 	http.Handle("/ping", srv.PingHandler())

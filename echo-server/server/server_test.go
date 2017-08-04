@@ -10,12 +10,10 @@ import (
 	"testing"
 )
 
-func setupServer() *Server {
+func setupServer() *server {
 	var buf bytes.Buffer
 	logger := log.New(&buf, "*** ", log.LUTC|log.LstdFlags)
-	return &Server{
-		accessLogger: logger,
-	}
+	return New(logger)
 }
 
 func Test__pingHandler(t *testing.T) {
